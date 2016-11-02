@@ -2,6 +2,9 @@ from __future__ import print_function
 
 from distutils.core import setup
 import sys
+import platform
+from distutils.extension import Extension
+from glob import glob
 
 name = "pony"
 version = __import__('pony').__version__
@@ -86,6 +89,17 @@ packages = [
 
 download_url = "http://pypi.python.org/pypi/pony/"
 
+if platform.python_implementation() == 'PyPy':
+    extensions = []
+else:
+    try:
+        from Cython.Build import cythonize
+    except ImportError:
+        import os
+        extensions = [Extension('pony.orm.%s' % splitext(source)[0]) for source in glob('pony/orm/*.c') + glob('pony/orm/dbproviders/*.c')]
+    else:
+        extensions = cythonize('pony/orm/[!a|c]*.py') + cythonize('pony/orm/dbproviders/*.py')
+
 if __name__ == "__main__":
     pv = sys.version_info[:2]
     if pv not in ((2, 7), (3, 3), (3, 4), (3, 5)):
@@ -105,5 +119,6 @@ if __name__ == "__main__":
         url=url,
         license=licence,
         packages=packages,
-        download_url=download_url
+        download_url=download_url,
+        ext_modules=extensions
     )
