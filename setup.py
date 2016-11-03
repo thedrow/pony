@@ -105,8 +105,10 @@ else:
                                 'pony/orm/ormtypes.py',
                                 'pony/orm/serialization.py',
                                 'pony/orm/sqlbuilding.py',
-                                'pony/orm/sqlsymbols.py'
-                                ]) + cythonize('pony/orm/dbproviders/*.py')
+                                'pony/orm/sqlsymbols.py',
+                                'pony/utils/parse_expr.py',
+                                'pony/orm/dbproviders/*.py'
+                                ])
 
 if __name__ == "__main__":
     pv = sys.version_info[:2]
