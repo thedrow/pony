@@ -98,7 +98,15 @@ else:
         import os
         extensions = [Extension('pony.orm.%s' % splitext(source)[0]) for source in glob('pony/orm/*.c') + glob('pony/orm/dbproviders/*.c')]
     else:
-        extensions = cythonize('pony/orm/[!a|c]*.py') + cythonize('pony/orm/dbproviders/*.py')
+        extensions = cythonize(['pony/orm/__init__.py',
+                                'pony/orm/dbapiprovider.py',
+                                'pony/orm/dbschema.py',
+                                'pony/orm/decompiling.py',
+                                'pony/orm/ormtypes.py',
+                                'pony/orm/serialization.py',
+                                'pony/orm/sqlbuilding.py',
+                                'pony/orm/sqlsymbols.py'
+                                ]) + cythonize('pony/orm/dbproviders/*.py')
 
 if __name__ == "__main__":
     pv = sys.version_info[:2]
